@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 // the card has been imported to the another file for easier handling
 //since the card itself doesnt change, its been put into a stateless widget
 class Images extends StatelessWidget {

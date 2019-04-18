@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
+// import 'package:flutter/rendering.dart'; // useful for debugging shit on the screen
+
 import './image_manager.dart';
 
 void main() {
   //main function
+  // debugPaintSizeEnabled = true; // shows arrows around widgets
+  // debugPaintPointersEnabled = true;    //shows touch
   runApp(MyApp()); //builds the app on the screen
 }
 
@@ -14,13 +18,22 @@ class MyApp extends StatelessWidget {
     //draws the object on the screen
     //CONTEXT: contains themes and extra deets about the app
     return MaterialApp(
+      // debugShowMaterialGrid: true,    //shows grid in the app
+      theme: ThemeData(
+          //brightness: Brightness.dark,    //changes app brightness to dakrer colors
+          brightness: Brightness.light,
+          primarySwatch: Colors.blueGrey,
+          // sets theme for the app which can be then used to color other
+          accentColor: Colors.deepPurple
+          //widgets in the same color scheme
+          ),
       home: Scaffold(
-        backgroundColor: Color.fromRGBO(242, 230, 255, 1.00),
+        //backgroundColor: Color.fromRGBO(242, 230, 255, 1.00),
         appBar: AppBar(
-          backgroundColor: Color.fromRGBO(117, 26, 255, 0.9),
+          //backgroundColor: Color.fromRGBO(117, 26, 255, 0.9),
           title: Text('My First Fucking App'),
         ),
-        body: ImageManager('Start image'),	// from image_manager.dart
+        body: ImageManager(startingImage: 'TRY PRESSING THAT DAMN BUTTON'), // from image_manager.dart
       ),
     );
     //return always returns a widget until we return a widget that ships w flutter

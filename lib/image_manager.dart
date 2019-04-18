@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import './images.dart';
+import './image_control.dart';
 
 /*
 class MyApp extends StatelessWidget {	
@@ -14,8 +15,9 @@ class ImageManager extends StatefulWidget {
   final String
       startingImage; //pass data for starting image through a constructor
 
-  ImageManager(this.startingImage);
-
+  ImageManager({this.startingImage = 'Initial default value'});
+  //takes in named arguments now ex:  child: RaisedButton <-- named argument
+  //the initial default value can be overwritten if a value is passed
   @override
   State<StatefulWidget> createState() {
     //creates a state of returned StatefulWidget
@@ -36,10 +38,17 @@ class _ImageManagerState extends State<ImageManager> {
     // code is executed whenever stateful widget is drawn to the screen. Even before the build func
     //it is used to use the properties of the widget class by the state class
     //dont have to call setstate for data change because it runs before build()
-    _images.add(widget
-        .startingImage); // widget is used because super methods can only be acccessed
-        // through the widget class method
+    _images.add(widget.startingImage);
+    // widget is used because super methods can only be acccessed
+    // through the widget class method
     super.initState();
+  }
+
+  void _buttonSetState() {
+    setState(() {
+      //tells flutter to change the state of the app according to the passed fuction
+      _images.add('THIS SHIT JUST GOT ADDED WHOOO'); // inserts new value to the _images list
+    });
   }
 
   @override
@@ -51,22 +60,14 @@ class _ImageManagerState extends State<ImageManager> {
   @override
   Widget build(BuildContext context) {
     //on setState only the buuld method of the widget is executed
-    return Column(
+    return ListView(//scrollable widget
       children: [
         Container(
           //color: Color.fromRGBO(200, 2, 2, 40.00),
           margin: EdgeInsets.all(10.0), //adds an inset margin around the button
-          child: RaisedButton(
-            color: Color.fromRGBO(153, 153, 255, 0.60),
-            onPressed: () {
-              setState(() {
-                //tells flutter to change the state of the app according to the passed fuction
-                _images.add(
-                    'New Dark image'); // inserts new value to the _images list
-              });
-            }, //onpressed function for the button
-            child: Text('Add Image'), //child text inside the button
-          ),
+          child: ImageControl(_buttonSetState),
+          // without the (), the func isnt executed but instead
+          //reference to function passed as argument
         ),
         Images(_images),
       ],
