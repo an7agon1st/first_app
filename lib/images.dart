@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 // the card has been imported to the another file for easier handling
 //since the card itself doesnt change, its been put into a stateless widget
 class Images extends StatelessWidget {
@@ -10,7 +9,8 @@ class Images extends StatelessWidget {
       this.images); //contructor which stores the arguments in the images list
   @override // override build method
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
+      //scrollable widget
       //since _products conatins multiple widgets, we put that in a column with the children property
       children: images
           .map(

@@ -47,7 +47,8 @@ class _ImageManagerState extends State<ImageManager> {
   void _buttonSetState() {
     setState(() {
       //tells flutter to change the state of the app according to the passed fuction
-      _images.add('THIS SHIT JUST GOT ADDED WHOOO'); // inserts new value to the _images list
+      _images.add(
+          'THIS SHIT JUST GOT ADDED WHOOO'); // inserts new value to the _images list
     });
   }
 
@@ -60,7 +61,7 @@ class _ImageManagerState extends State<ImageManager> {
   @override
   Widget build(BuildContext context) {
     //on setState only the buuld method of the widget is executed
-    return ListView(//scrollable widget
+    return Column(
       children: [
         Container(
           //color: Color.fromRGBO(200, 2, 2, 40.00),
@@ -69,7 +70,11 @@ class _ImageManagerState extends State<ImageManager> {
           // without the (), the func isnt executed but instead
           //reference to function passed as argument
         ),
-        Images(_images),
+        // put list view (Images()) in a container with specified height or expanded
+        //to expand to the rest of the screen
+        Expanded(
+          child: Images(_images),
+        ),
       ],
     );
   }
