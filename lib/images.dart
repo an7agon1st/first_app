@@ -1,37 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import './pages/product.dart';
 
-// the card has been imported to the another file for easier handling
-//since the card itself doesnt change, its been put into a stateless widget
 class Images extends StatelessWidget {
-  final List<String> images; //creates a list like in main (_images)
-  //final list because the its a stateless widget
-  Images(
-      this.images); //contructor which stores the arguments in the images list
-  @override // override build method
-  Widget build(BuildContext context) {
-    return ListView(
-      //scrollable widget
-      //since _products conatins multiple widgets, we put that in a column with the children property
-      children: images
-          .map(
-            //maps product elements into a list of cards
-            (element) => Card(
-                  color: Color.fromRGBO(242, 230, 255, 1.00),
-                  //element is the element in the product list
-                  // card which holds all the widgets together
-                  child: Column(
-                    // sets widgets in a column
-                    children: <Widget>[
-                      //list of widgets to add in a column
-                      Image.asset('assets/dark_image.jpg'),
-                      //assets listed in pubspec.yaml file
-                      //added images specified there under assets tag
-                      Text(element)
-                    ],
-                  ),
-                ),
+  // map is equivalent to a dictionary in python
+  //Map<'ValueType for Key', 'ValueType for value'>
+  final List<Map<String, String>> images;
+
+  final Function deleteProduct;
+
+  Images(this.images, {this.deleteProduct});
+
+  Widget _buildImageItem(BuildContext context, int index) {
+    //context: theme info and all that
+    // index: index of the item being built
+    return Card(
+      color: Color.fromRGBO(242, 230, 255, 1.00),
+      child: Column(
+        children: <Widget>[
+          Image.asset(images[index]['image']),
+          Text(images[index]['title']),
+          ButtonBar(
+            alignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FlatButton(
+                child: Text('Details'),
+                onPressed: () => Navigator.push<bool>(
+                        // within <this> we tell flutter what value will be returned when the page is popped
+                        // pushes new page on top of pages stack
+                        context,
+                        // passes context containing the current page info and such
+                        MaterialPageRoute(
+                            // handles page route navigation
+                            builder: (BuildContext context) {
+                              //pass context with initializing product page
+                      return ProductPage(
+                          images[index]['title'], images[index]['image']);
+                    })
+                        // passes context containing the current page info and such
+                        // MaterialPageRoute(
+                        //   // handles page route navigation
+                        //   builder: (BuildContext context) => ProductPage(
+                        //       images[index]['title'], images[index]['image']),
+                        //   //pass context with initializing product page
+                        // ),
+                        ).then((bool value) {
+                      // then is a future method which listens when a page is popped
+                      //and a value is returned which is caught in the arguemt of ()
+                      if (value) {
+                        deleteProduct(index);
+                      }
+                    }),
+              ),
+              //button to implement page navigation
+            ],
           )
-          .toList(),
+          // acceses that index item of the list
+        ],
+      ),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //conditionally rendering content
+    Widget conditionallyRendered;
+    if (images.length == 0) {
+      conditionallyRendered =
+          Center(child: Text("Add Image, click that fucking button"));
+    } else {
+      conditionallyRendered = ListView.builder(
+        //builder renders content as needed on the screen
+        itemBuilder: _buildImageItem,
+        // reference to the function. Executed by flutter
+
+        //how many items to build in total to estimate total scroll length
+        itemCount: images.length,
+      );
+    }
+    return conditionallyRendered;
   }
 }
